@@ -77,7 +77,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="83dp"
         android:layout_marginBottom="61dp"
-        android:text="Handy Man"
+        android:text="HelpMeOut"
         android:textAppearance="@android:style/TextAppearance.Holo.Small"
         android:textColor="@android:color/holo_green_light"
         android:textSize="30sp"
