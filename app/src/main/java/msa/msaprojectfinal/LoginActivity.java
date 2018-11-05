@@ -37,9 +37,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+                    System.out.println("------------------------------LOGGED IN -------------------------");
+                    System.out.println(user.getEmail());
                     Toast.makeText(LoginActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
-                    Intent I = new Intent(LoginActivity.this, UserActivity.class);
-                    startActivity(I);
+                    Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
+                    myIntent.putExtra("emailID", user.getEmail());
+                    startActivity(myIntent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Login to continue", Toast.LENGTH_SHORT).show();
                 }
@@ -74,7 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Unsuccessful login!", Toast.LENGTH_SHORT).show();
                             } else {
-                                startActivity(new Intent(LoginActivity.this, UserActivity.class));
+                                Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
+                                myIntent.putExtra("emailID", loginEmailId.getText().toString());
+                                startActivity(myIntent);
                             }
                         }
                     });
