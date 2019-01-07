@@ -1,6 +1,9 @@
 package msa.msaprojectfinal;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
     public String username;
     public String email;
     public String firstName;
@@ -26,4 +29,39 @@ public class User {
         this.email = email;
     }
 
+    protected User(Parcel in) {
+        username = in.readString();
+        email = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        userId = in.readString();
+        city = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(email);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(userId);
+        dest.writeString(city);
+    }
 }

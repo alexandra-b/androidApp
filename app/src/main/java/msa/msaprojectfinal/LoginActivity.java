@@ -15,13 +15,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     public EditText loginEmailId, logInpasswd;
     Button btnLogIn;
     TextView signup;
     FirebaseAuth firebaseAuth;
+    private User currentUser;
+    private String email;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +47,32 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     System.out.println("------------------------------LOGGED IN -------------------------");
                     System.out.println(user.getEmail());
+                    email = user.getEmail();
+                    mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot currDataSnapshot : dataSnapshot.getChildren()) {
+                                if(currDataSnapshot.getValue(User.class).email.equals(email)){
+                                    currentUser = currDataSnapshot.getValue(User.class);
+                                    //userNameTV.setText(currentUser.username);
+                                    System.out.println("USER FROM DB IS "+currentUser.username);
+                                    Intent myIntent = new Intent(LoginActivity.this, UserMenuActivity.class);
+                                    myIntent.putExtra("user", currentUser);
+                                    startActivity(myIntent);
+                                    break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                     Toast.makeText(LoginActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
-                    myIntent.putExtra("emailID", user.getEmail());
-                    startActivity(myIntent);
+                    //Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
+//                    Intent myIntent = new Intent(LoginActivity.this, UserMenuActivity.class);
+//                    myIntent.putExtra("user", currentUser);
+//                    startActivity(myIntent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Login to continue", Toast.LENGTH_SHORT).show();
                 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
-    Button btnLogOut, btnCreatePost;
+    Button btnLogOut, btnCreatePost, btnMyPosts, btnSeeAllPosts, btnSeeMenu;
     FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
@@ -30,7 +30,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         Intent intent = getIntent();
-        final String userId = intent.getStringExtra("userId");
+       // final String userId = intent.getStringExtra("userId");
         final String email = intent.getStringExtra("emailID");
         userNameTV = findViewById(R.id.textViewUserName);
         mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
@@ -40,7 +40,6 @@ public class UserActivity extends AppCompatActivity {
                     if(currDataSnapshot.getValue(User.class).email.equals(email)){
                         currentUser = currDataSnapshot.getValue(User.class);
                         userNameTV.setText(currentUser.username);
-                        System.out.println("USER NAME IS "+currentUser.username);
                         break;
                     }
                 }
@@ -67,11 +66,42 @@ public class UserActivity extends AppCompatActivity {
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent I = new Intent(UserActivity.this, CreatePostActivity.class);
-                startActivity(I);
+                Intent myIntent = new Intent(UserActivity.this, CreatePostActivity.class);
+                 myIntent.putExtra("user", currentUser);
+                startActivity(myIntent);
             }
         });
 
+        btnMyPosts = (Button) findViewById(R.id.buttonMyPosts);
+
+        btnMyPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(UserActivity.this, UserPostsActivity.class);
+                myIntent.putExtra("user", currentUser);
+                startActivity(myIntent);
+            }
+        });
+
+        btnSeeAllPosts = (Button) findViewById(R.id.buttonSeeAllPosts);
+        btnSeeAllPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(UserActivity.this, AllPostsActivity.class);
+                myIntent.putExtra("user", currentUser);
+                startActivity(myIntent);
+            }
+        });
+
+        btnSeeMenu = (Button) findViewById(R.id.buttonSeeMenu);
+        btnSeeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(UserActivity.this, UserMenuActivity.class);
+                myIntent.putExtra("emailID", email);
+                startActivity(myIntent);
+            }
+        });
 
     }
 

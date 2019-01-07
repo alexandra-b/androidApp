@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Toast.makeText(MainActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(MainActivity.this, UserActivity.class);
+                   // Intent myIntent = new Intent(MainActivity.this, UserActivity.class);
+                    Intent myIntent = new Intent(MainActivity.this, UserMenuActivity.class);
                     myIntent.putExtra("emailID", user.getEmail());
                     startActivity(myIntent);
                 } else {
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     //updateDataBaseWithNewUser
                                     String userId = addNewUser(first_name.getText().toString(), last_name.getText().toString(),emailId.getText().toString(),user_name.getText().toString(), city.getText().toString());
-                                    Intent myIntent = new Intent(MainActivity.this, UserActivity.class);
+                                    //Intent myIntent = new Intent(MainActivity.this, UserActivity.class);
+                                    Intent myIntent = new Intent(MainActivity.this, UserMenuActivity.class);
                                     //myIntent.putExtra("userId", userId);
                                     myIntent.putExtra("emailID", emailID);
                                     startActivity(myIntent);
