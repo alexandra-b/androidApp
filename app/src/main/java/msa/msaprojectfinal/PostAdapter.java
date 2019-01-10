@@ -57,7 +57,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView title = (TextView) listItem.findViewById(R.id.textViewTitlePost);
         title.setText(currentPost.title);
         TextView reward = (TextView) listItem.findViewById(R.id.textViewReward);
-        reward.setText(currentPost.payment.toString()+" lei");
+        reward.setText(currentPost.payment+" lei");
         TextView date_posted =  (TextView) listItem.findViewById(R.id.textViewPostDate);
         date_posted.setText(currentPost.date_posted);
         return listItem;

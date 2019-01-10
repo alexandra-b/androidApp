@@ -2,9 +2,13 @@ package msa.msaprojectfinal;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,30 +18,32 @@ import android.widget.Spinner;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class CreatePostActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreatePostFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     public EditText title, description, payment, category;
     Button buttonCreatePost;
     private Spinner spinner;
     private String category_chosen;
     private DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
     private static final String[] paths = {"Cleaning", "House", "Garden", "Education", "Jobs"};
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addpost);
-        Bundle data = getIntent().getExtras();
-        final User currentUser = (User) data.getParcelable("user");
-        System.out.println("USER FROM PARCELABLE IS "+currentUser.username);
-        spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(CreatePostActivity.this, android.R.layout.simple_spinner_item,paths);
+    private User currentUser;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
+        View myFragmentView = inflater.inflate(R.layout.activity_addpost, container, false);
+        getActivity().setTitle("Create post");
+        Bundle bundle = getArguments();
+        currentUser = (User) bundle.getParcelable("user");
+        spinner = (Spinner)myFragmentView.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,paths);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        title = findViewById(R.id.editTextTitle);
-        description = findViewById(R.id.editTextDescription);
-        payment = findViewById(R.id.editTextPayment);
+        title = myFragmentView.findViewById(R.id.editTextTitle);
+        description = myFragmentView.findViewById(R.id.editTextDescription);
+        payment = myFragmentView.findViewById(R.id.editTextPayment);
         //category = findViewById(R.id.editTextCategory);
-        buttonCreatePost = findViewById(R.id.buttonCreatePost);
+        buttonCreatePost = myFragmentView.findViewById(R.id.buttonCreatePost);
         buttonCreatePost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String titleString = title.getText().toString();
@@ -46,13 +52,22 @@ public class CreatePostActivity extends AppCompatActivity implements AdapterView
                 String categoryString = category_chosen;
                 //category.getText().toString();
                 addNewPost(currentUser.userId, currentUser.username, titleString, descriptionString, categoryString, paymentDouble);
-                Intent myIntent = new Intent(CreatePostActivity.this, UserActivity.class);
-                myIntent.putExtra("emailID", currentUser.email);
-                startActivity(myIntent);
+                //getFragmentManager().popBackStack();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                UserPostsFragment fragment2 = new UserPostsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", currentUser);
+                fragment2.setArguments(bundle);
+                ft.replace(R.id.fragment_container, fragment2);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
 
+        return myFragmentView;
     }
+
     private void addNewPost(String uid, String author, String title, String description, String category, double payment) {
         Log.d("Am here",title);
         String key = mDatabase.push().getKey();
@@ -86,4 +101,5 @@ public class CreatePostActivity extends AppCompatActivity implements AdapterView
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

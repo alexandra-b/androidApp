@@ -107,8 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Unsuccessful login!", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
-                                myIntent.putExtra("emailID", loginEmailId.getText().toString());
+//                                Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
+//                                myIntent.putExtra("emailID", loginEmailId.getText().toString());
+//                                startActivity(myIntent);
+                                Intent myIntent = new Intent(LoginActivity.this, UserMenuActivity.class);
+                                myIntent.putExtra("user", currentUser);
                                 startActivity(myIntent);
                             }
                         }

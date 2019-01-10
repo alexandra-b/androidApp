@@ -3,6 +3,7 @@ package msa.msaprojectfinal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,7 @@ public class UserMenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_menu);
+        this.setTitle("Home");
         //
         fab = findViewById(R.id.fab);
         Intent intent = getIntent();
@@ -118,7 +120,17 @@ public class UserMenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_myfilter) {
+            fab.hide();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            FilterFragment fragment2 = new FilterFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("user", currentUser);
+            fragment2.setArguments(bundle);
+            ft.replace(R.id.fragment_container, fragment2);
+            ft.addToBackStack(null);
+            ft.commit();
             return true;
         }
 
@@ -145,8 +157,13 @@ public class UserMenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_allposts) {
             //all posts
             fab.hide();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container,(Fragment)new AllPostsFragment()).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            AllPostsFragment fragment2 = new AllPostsFragment();
+            ft.replace(R.id.fragment_container, fragment2);
+            ft.addToBackStack(null);
+            ft.commit();
+
         } else if (id == R.id.nav_addpost) {
             fab.hide();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -173,8 +190,14 @@ public class UserMenuActivity extends AppCompatActivity
             ft.replace(R.id.fragment_container, fragment2);
             ft.addToBackStack(null);
             ft.commit();
+        }else if( id == R.id.nav_home){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            HomeFragment fragment2 = new HomeFragment();
+            ft.replace(R.id.fragment_container, fragment2);
+            ft.addToBackStack(null);
+            ft.commit();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

@@ -21,14 +21,14 @@ public class Post implements Parcelable {
     public String description;
     public String category;
     public boolean available;
-    public String payment;
+    public double payment;
     @Exclude public String key_id;
 
     public Post(){
 
     }
 
-    public Post(String uid, String author, String title, String description, String category, String payment) {
+    public Post(String uid, String author, String title, String description, String category, double payment) {
         this.user_id = uid;
         this.user_name = author;
         this.title = title;
@@ -47,7 +47,7 @@ public class Post implements Parcelable {
         description = in.readString();
         category = in.readString();
         available = in.readByte() != 0;
-        payment = in.readString();
+        payment = in.readDouble();
         key_id = in.readString();
     }
 
@@ -91,7 +91,7 @@ public class Post implements Parcelable {
         this.available = available;
     }
 
-    public void setPayment(String payment) {
+    public void setPayment(Double payment) {
         this.payment = payment;
     }
 
@@ -123,7 +123,7 @@ public class Post implements Parcelable {
         return available;
     }
 
-    public String getPayment() {
+    public Double getPayment() {
         return payment;
     }
 
@@ -141,7 +141,7 @@ public class Post implements Parcelable {
         dest.writeString(description);
         dest.writeString(category);
         dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeString(payment);
+        dest.writeDouble(payment);
         dest.writeString(key_id);
     }
 }
