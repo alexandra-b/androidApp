@@ -40,7 +40,6 @@ public class FilterFragment extends Fragment{
     private static final String[] pathsSortBy = {"Most rewarded first", "Less rewarded first"};
     private static final String[] pathsCategory = {"Cleaning", "House", "Garden", "Education", "Jobs", "All categories"};
     private static final String[] pathsSearchIn = {"My Posts Only", "All Posts"};
-
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (container != null) {
             container.removeAllViews();
@@ -65,7 +64,7 @@ public class FilterFragment extends Fragment{
         filter_button = (Button) myFragmentView.findViewById(R.id.buttonFilter);
         filter_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if(search_in.equals("All posts")){
+                if(search_in.equals("All Posts")){
                     my_p = 0;
                 }
                 if(sort_by.equals("Most rewarded first")){
@@ -86,6 +85,10 @@ public class FilterFragment extends Fragment{
                                 if(my_p!=0){
                                     //only user s posts
                                     if(!currentPost.user_id.equals(currentUser.userId)){
+                                        continue;
+                                    }
+                                }else{
+                                    if(currentPost.available == false){
                                         continue;
                                     }
                                 }
@@ -113,6 +116,7 @@ public class FilterFragment extends Fragment{
                                 System.out.println("tried asc");
                                 bundle.putParcelableArrayList("posts", filteredPosts);
                             }
+                            bundle.putParcelable("user", currentUser);
                             bundle.putString("all_c", category_chosen);
                             bundle.putInt("my_p", my_p);
                             bundle.putInt("asc", asc);

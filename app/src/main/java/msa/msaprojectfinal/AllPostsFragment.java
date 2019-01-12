@@ -39,9 +39,11 @@ public class AllPostsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Post currentPost = dataSnapshot.getValue(Post.class);
-                currentPost.key_id = dataSnapshot.getKey();
-                postsList.add(currentPost);
-                mAdapter.notifyDataSetChanged();
+                if(currentPost.available == true){
+                    currentPost.key_id = dataSnapshot.getKey();
+                    postsList.add(currentPost);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

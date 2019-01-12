@@ -20,6 +20,7 @@ public class MyPostDetailedFragment extends Fragment {
     TextView datePosted, userName, description, payment, availability, title;
     Post currentPost;
     private DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference().child("Posts");
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (container != null) {
             container.removeAllViews();
@@ -58,7 +59,19 @@ public class MyPostDetailedFragment extends Fragment {
             }
         });
 
-
+        btnMarkUnavailable = myFragmentView.findViewById(R.id.buttonMarkUnaival);
+        btnMarkUnavailable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //update this post from db
+                String post_key = currentPost.key_id;
+                boolean new_value = false;
+                System.out.println("Post key is "+post_key);
+                mDatabase.child(post_key).child("available").setValue(new_value);
+                availability.setText("Post is Unavailable");
+            }
+        });
         return myFragmentView;
     }
+
 }

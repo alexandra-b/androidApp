@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,20 +102,24 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (userEmail.isEmpty() && userPaswd.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Fields Empty!", Toast.LENGTH_SHORT).show();
                 } else if (!(userEmail.isEmpty() && userPaswd.isEmpty())) {
-                    firebaseAuth.signInWithEmailAndPassword(userEmail, userPaswd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                    System.out.println("OLA");
+                    firebaseAuth.signInWithEmailAndPassword(userEmail, userPaswd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Unsuccessful login!", Toast.LENGTH_SHORT).show();
-                            } else {
+                        public void onComplete(@NonNull Task < AuthResult > task) {
+                            System.out.println("DADA");
+                                if (!task.isSuccessful()) {
+                                    Log.d("FirebaseAuth", "onComplete" + task.getException().getMessage());
+                                    Toast.makeText(LoginActivity.this, "Unsuccessful login!", Toast.LENGTH_SHORT).show();
+                                } else {
 //                                Intent myIntent = new Intent(LoginActivity.this, UserActivity.class);
 //                                myIntent.putExtra("emailID", loginEmailId.getText().toString());
 //                                startActivity(myIntent);
-                                Intent myIntent = new Intent(LoginActivity.this, UserMenuActivity.class);
-                                myIntent.putExtra("user", currentUser);
-                                startActivity(myIntent);
+                                    System.out.println("OFF");
+                                    Intent myIntent = new Intent(LoginActivity.this, UserMenuActivity.class);
+                                    myIntent.putExtra("user", currentUser);
+                                    startActivity(myIntent);
+                                }
                             }
-                        }
                     });
                 } else {
                     Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();

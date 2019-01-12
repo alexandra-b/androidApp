@@ -63,14 +63,15 @@
         android:id="@+id/textViewDatePosted"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="122dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginBottom="31dp"
+        android:layout_marginBottom="210dp"
         android:text="TextView"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPostDescription"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAvailability"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPostedBy" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonDeletePost"
@@ -98,15 +99,15 @@
         android:id="@+id/textViewAvailability"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="150dp"
         android:text="TextView"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonMarkUnaival"
-        app:layout_constraintEnd_toEndOf="@+id/textViewRewardPost"
-        app:layout_constraintStart_toEndOf="@+id/textViewPostedBy"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRewardPost" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonMarkUnaival"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDatePosted" />
 
     <TextView
         android:id="@+id/textView25"
